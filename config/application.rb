@@ -1,6 +1,6 @@
-require_relative "boot"
+require_relative 'boot'
 
-require "rails/all"
+require 'rails/all'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -18,5 +18,14 @@ module ImportmapViewComponentStimulus
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # This is a temporary workaround until we can figure out how to properly
+    # autoload Stimulus controllers from non-default folder locations.
+    # See https://github.com/Shopify/infra-central/pull/15#discussion_r895964260
+    # and https://github.com/github/view_component/issues/1064
+    config.eager_load_paths << Rails.root.join('app/frontend/components')
+    config.importmap.cache_sweepers << Rails.root.join('app/frontend')
+    config.assets.paths << Rails.root.join('app/frontend')
+    config.view_component.view_component_path = 'app/frontend/components'
   end
 end
