@@ -1,4 +1,4 @@
-# View Component + importmap-rails + Stimulus example
+# Rails 7 + View Component + importmap-rails + Stimulus example
 
 This is a test app to replicate the setup that allows you to use importmaps-backed vanilla `rails new` Rails 7 app with the View Components generated with `--stimulus` flag.
 
