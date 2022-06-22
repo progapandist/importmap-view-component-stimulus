@@ -10,7 +10,7 @@ Run the app locally:
 - bundle && dev/bin
 - point the browser to `localhost:3000`
 
-The `fail` branch demonstrates that the obvious way to pin component's Stimulus controllers in `importmap.rb` and register them in `manifest.js` doesn't work and leads to the "Asset missed in the pipeline" error.
+The `fail` branch demonstrates that the obvious way to pin component's Stimulus controllers in `importmap.rb` and register them in `manifest.js` doesn't work and leads to the _"Importmap skipped missing path"_ error.
 
 ## Current workaround
 
@@ -55,4 +55,47 @@ This workaround is not ideal, as it requires us messing with the Rails' `eager_l
 
 ## Without the workaround
 
-Here's the same app's configuration, but without the workaround (components are under `app/components`):
+Here's the same app's configuration, but without the workaround (components are under `app/components`). There are no changes to `application.rb` and the controllers are loaded like so:
+
+```rb
+# importmap.rb
+
+pin 'application', preload: true
+pin '@hotwired/turbo-rails', to: 'turbo.min.js', preload: true
+pin '@hotwired/stimulus', to: 'stimulus.min.js', preload: true
+pin '@hotwired/stimulus-loading', to: 'stimulus-loading.js', preload: true
+pin_all_from 'app/javascript/controllers', under: 'controllers'
+# New configuration
+pin_all_from 'app/components', under: 'components'
+```
+
+```js
+// manifest.js
+
+//= link_tree ../images
+//= link_directory ../stylesheets .css
+//= link_tree ../../javascript .js
+//= link_tree ../../components .js
+//= link_tree ../builds
+```
+
+```js
+// app/javascript/controllers/index.js
+
+// Import and register all your controllers from the importmap under controllers/*
+
+import { application } from "controllers/application";
+
+// Eager load all controllers defined in the import map under controllers/**/*_controller
+import { eagerLoadControllersFrom } from "@hotwired/stimulus-loading";
+eagerLoadControllersFrom("controllers", application);
+
+// Added line
+eagerLoadControllersFrom("components", application);
+```
+
+As you can see, in this case the View Component's Stimulus controllers are not loaded.
+
+![Only vanilla controllers work](docs/fails.png)
+![Controllers from app/components not loaded](docs/fails2.png)
+![Error in server logs](docs/fails3.png)
