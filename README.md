@@ -7,7 +7,7 @@ The `main` branch contains a workaround that allows both default Stimulus contro
 Run the app locally:
 
 - clone this repo
-- bundle && dev/bin
+- `bundle && dev/bin`
 - point the browser to `localhost:3000`
 
 The `fail` branch demonstrates that the obvious way to pin component's Stimulus controllers in `importmap.rb` and register them in `manifest.js` doesn't work and leads to the _"Importmap skipped missing path"_ error.
