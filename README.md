@@ -1,4 +1,4 @@
-# View Component + importmap-rails + Stimulus example
+# Rails 7 + View Component + importmap-rails + Stimulus example
 
 This is a test app to replicate the setup that allows you to use importmaps-backed vanilla `rails new` Rails 7 app with the View Components generated with `--stimulus` flag.
 
@@ -7,7 +7,7 @@ The `main` branch contains a workaround that allows both default Stimulus contro
 Run the app locally:
 
 - clone this repo
-- bundle && dev/bin
+- `bundle && dev/bin`
 - point the browser to `localhost:3000`
 
 The `fail` branch demonstrates that the obvious way to pin component's Stimulus controllers in `importmap.rb` and register them in `manifest.js` doesn't work and leads to the _"Importmap skipped missing path"_ error.
